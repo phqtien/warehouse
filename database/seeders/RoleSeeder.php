@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role; // Nếu đã tạo Model Role
 use App\Models\User;
 
-class RolesTableSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.

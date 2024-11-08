@@ -3,63 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\Warehouse;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return view('/admin/warehouses');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function fetchWarehouses(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $warehouses = Warehouse::All();
+
+            return DataTables::of($warehouses)
+                ->editColumn('created_at', function ($warehouse) {
+                    return $warehouse->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+                })
+                ->make(true);
+        }
+
+        return abort(404);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+        ]);
+
+        Warehouse::create([
+            'name' => $request->name,
+            'address' => $request->address,
+        ]);
+
+        return response()->json([
+            'message' => 'Warehouse created successfully.',
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Warehouse $warehouse)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+        ]);
+
+        $warehouse = Warehouse::findOrFail($id);
+
+        $warehouse->update([
+            'name' => $request->name,
+            'address' => $request->address,
+        ]);
+
+        return response()->json([
+            'message' => 'Warehouse updated successfully.',
+        ], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Warehouse $warehouse)
+    public function destroy($id)
     {
-        //
-    }
+        $user = Warehouse::findOrFail($id);
+        $user->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Warehouse $warehouse)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Warehouse $warehouse)
-    {
-        //
+        return response()->json([
+            'message' => 'Warehouse deleted successfully.'
+        ], 200);
     }
 }

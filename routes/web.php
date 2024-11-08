@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\ShelfController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -32,5 +34,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+        Route::get('/warehouses', [WarehouseController::class, 'index']);
+        Route::get('/warehouses/fetch', [WarehouseController::class, 'fetchWarehouses']);
+        Route::post('/warehouses', [WarehouseController::class, 'store']);
+        Route::put('/warehouses/{id}', [WarehouseController::class, 'update']);
+        Route::delete('/warehouses/{id}', [WarehouseController::class, 'destroy']);
+
+        Route::get('/shelves', [ShelfController::class, 'index']);
+        Route::get('/shelves/fetch', [ShelfController::class, 'fetchShelfs']);
+        Route::post('/shelves', [ShelfController::class, 'store']);
+        Route::put('/shelves/{id}', [ShelfController::class, 'update']);
+        Route::delete('/shelves/{id}', [ShelfController::class, 'destroy']);
     });
 });

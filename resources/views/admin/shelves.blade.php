@@ -6,33 +6,32 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Products Management</h6>
-            <button type="button" class="btn btn-primary" id="showNewProductBtn">New Product</button>
+            <h6 class="m-0 font-weight-bold text-primary">Shelfs Management</h6>
+            <button type="button" class="btn btn-primary" id="showNewShelfBtn">New Shelf</button>
 
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="productsTable">
+                <table class="table table-striped table-bordered" id="shelvesTable">
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Warehouse</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Category</th>
+                            <th>Capacity</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
+                        <th>ID</th>
+                            <th>Warehouse</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Category</th>
+                            <th>Capacity</th>
                             <th>Created At</th>
                             <th>Action</th>
+                        </tr>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -44,78 +43,72 @@
 
 </div>
 
-<!-- Modal for New Product -->
-<div class="modal fade" id="newProductModal" tabindex="-1" aria-labelledby="newProductModalLabel" aria-hidden="true">
+<!-- Modal for New Shelf -->
+<div class="modal fade" id="newShelfModal" tabindex="-1" aria-labelledby="newShelfModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newProductModalLabel">New Product</h5>
+                <h5 class="modal-title" id="newShelfModalLabel">New Shelf</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
-            <form id="newProductForm">
+            <form id="newShelfForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="newProductName" placeholder="Name" required>
+                        <input type="text" class="form-control" id="newShelfName" placeholder="Name" required>
                     </div>
-                    <div class="mb-3">
-                        <textarea class="form-control" id="newProductDescription" placeholder="Description" required></textarea>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="mb-3">
-                            <input type="number" class="form-control" id="newProductPrice" placeholder="Price" min="0" required>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <input type="number" class="form-control" id="newShelfCapacity" placeholder="Capacity" min="0" required>
                         </div>
-                        <div class="mb-3">
-                            <select class="form-control" id="newProductCategory" required>
+                        <div>
+                            <select class="form-control" id="newShelfWarehouse" required>
                                 <option value="" disabled selected>Select Category</option>
-                                @foreach($subcategories as $subcategory)
-                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                @foreach($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submitNewProductBtn">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submitNewShelfBtn">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Modal for Edit Product -->
-<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+<!-- Modal for Edit Shelf -->
+<div class="modal fade" id="editShelfModal" tabindex="-1" aria-labelledby="editShelfModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                <h5 class="modal-title" id="editShelfModalLabel">Edit Shelf</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
-            <form id="editProductForm">
+            <form id="editShelfForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="editProductName" placeholder="Name" required>
+                        <input type="text" class="form-control" id="editShelfName" placeholder="Name" required>
                     </div>
-                    <div class="mb-3">
-                        <textarea class="form-control" id="editProductDescription" placeholder="Description" required></textarea>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="mb-3">
-                            <input type="number" class="form-control" id="editProductPrice" placeholder="Price" min="0" required>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <input type="number" class="form-control" id="editShelfCapacity" placeholder="Capacity" min="0" required>
                         </div>
-                        <div class="mb-3">
-                            <select class="form-control" id="editProductCategory" required>
+                        <div>
+                            <select class="form-control" id="editShelfWarehouse" required>
                                 <option value="" disabled selected>Select Category</option>
-                                @foreach($subcategories as $subcategory)
-                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                @foreach($warehouses as $warehouse)
+                                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" id="deleteProductBtn" data-bs-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btn-danger" id="deleteShelfBtn" data-bs-dismiss="modal">Delete</button>
                     <div>
-                        <button type="submit" class="btn btn-primary" id="saveEditProductBtn">Save</button>
+                        <button type="submit" class="btn btn-primary" id="saveEditShelfBtn">Save</button>
                     </div>
                 </div>
 
@@ -125,25 +118,25 @@
 </div>
 
 <!-- Modal for Delete Confirmation -->
-<div class="modal fade modal" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+<div class="modal fade modal" id="deleteShelfModal" tabindex="-1" aria-labelledby="deleteShelfModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteProductModalLabel">Confirm Delete</h5>
+                <h5 class="modal-title" id="deleteShelfModalLabel">Confirm Delete</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this product?
+                Are you sure you want to delete this shelf?
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteProductBtn">Delete</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteShelfBtn">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="{{ asset('js/products.js') }}"></script>
+<script src="{{ asset('js/shelves.js') }}"></script>
 @endsection
 
 @push('styles')

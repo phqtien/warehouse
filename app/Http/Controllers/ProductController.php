@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         if ($request->ajax()) {
             $users = Product::join('categories', 'products.category_id', '=', 'categories.id')
-                ->select(['products.id', 'products.name', 'products.description', 'products.price', 'products.stock_quantity', 'categories.name as category', 'categories.id as category_id', 'products.created_at']);
+                ->select(['products.id', 'products.name', 'products.description', 'products.price', 'categories.name as category', 'categories.id as category_id', 'products.created_at']);
 
             return DataTables::of($users)
                 ->filterColumn('category', function ($query, $keyword) {
@@ -40,7 +40,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
             'description' => 'required|string|max:1000',
             'category_id' => 'required|integer',
         ]);
@@ -48,7 +47,6 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
             'description' => $request->description,
             'category_id' => $request->category_id,
         ]);
@@ -63,7 +61,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
             'description' => 'required|string|max:1000',
             'category_id' => 'required|integer',
         ]);
@@ -73,7 +70,6 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
             'description' => $request->description,
             'category_id' => $request->category_id,
         ]);
