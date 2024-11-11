@@ -32,7 +32,6 @@
         <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="/users">Users</a>
-                <a class="collapse-item" href="/products">Product</a>
                 <a class="collapse-item" href="/warehouses">Warehouse</a>
                 <a class="collapse-item" href="/shelves">Shelves</a>
             </div>
@@ -51,7 +50,8 @@
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Puchase Orders</a>
+                <a class="collapse-item" href="/products">Product</a>
+                <a class="collapse-item" href="/purchase-orders">Puchase Orders</a>
             </div>
         </div>
     </li>

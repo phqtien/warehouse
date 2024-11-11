@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ShelfController;
+use App\Http\Controllers\PurchaseOrderController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -18,9 +19,20 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/logout', [AuthController::class, 'logout']);
 
-        Route::get('/tables', function () {
-            return view('/user/tables');
-        });
+        Route::get('/products', [ProductController::class, 'index']);
+        Route::get('/products/fetch', [ProductController::class, 'fetchProducts']);
+        Route::post('/products', [ProductController::class, 'store']);
+        Route::put('/products/{id}', [ProductController::class, 'update']);
+        Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+        Route::get('/purchase-orders', [PurchaseOrderController::class, 'index']);
+        Route::get('/purchase-orders/fetch', [PurchaseOrderController::class, 'fetchPurchaseOrders']);
+        Route::get('/purchase-orders/new-purchase-order', [PurchaseOrderController::class, 'newPurchaseOrder']);
+        Route::get('/purchase-orders/edit-purchase-order/{id}', [PurchaseOrderController::class, 'editPurchaseOrder']);
+        Route::get('/purchase-orders/search-product-by-name', [PurchaseOrderController::class, 'searchProductByName']);
+        Route::post('/purchase-orders', [PurchaseOrderController::class, 'store']);
+        Route::put('/purchase-orders/{id}', [PurchaseOrderController::class, 'update']);
+        Route::delete('/purchase-orders/{id}', [PurchaseOrderController::class, 'destroy']);
     });
 
     Route::middleware('role:admin')->group(function () {
@@ -28,12 +40,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/fetch', [UserController::class, 'fetchUsers']);
         Route::post('/users', [UserController::class, 'store']);
         Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-        Route::get('/products', [ProductController::class, 'index']);
-        Route::get('/products/fetch', [ProductController::class, 'fetchProducts']);
-        Route::post('/products', [ProductController::class, 'store']);
-        Route::put('/products/{id}', [ProductController::class, 'update']);
-        Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
         Route::get('/warehouses', [WarehouseController::class, 'index']);
         Route::get('/warehouses/fetch', [WarehouseController::class, 'fetchWarehouses']);

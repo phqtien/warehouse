@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'description' },
             { data: 'price' },
             { data: 'category' },
+            { data: 'stock_quantity' },
             { data: 'created_at' },
             {
                 data: null,

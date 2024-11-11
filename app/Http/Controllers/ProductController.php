@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -19,15 +20,27 @@ class ProductController extends Controller
     public function fetchProducts(Request $request)
     {
         if ($request->ajax()) {
-            $users = Product::join('categories', 'products.category_id', '=', 'categories.id')
-                ->select(['products.id', 'products.name', 'products.description', 'products.price', 'categories.name as category', 'categories.id as category_id', 'products.created_at']);
+            $products = Product::join('categories', 'products.category_id', '=', 'categories.id')
+                ->leftJoin('purchase_order_details', 'purchase_order_details.product_id', '=', 'products.id')
+                ->leftjoin('purchase_orders', 'purchase_orders.id', '=', 'purchase_order_details.purchase_order_id')
+                ->select([
+                    'products.id',
+                    'products.name',
+                    'products.description',
+                    'products.price',
+                    'categories.name as category',
+                    'categories.id as category_id',
+                    'products.created_at',
+                    DB::raw('COALESCE(SUM(CASE WHEN purchase_orders.status = "Done" THEN purchase_order_details.quantity ELSE 0 END), 0) as stock_quantity'),
+                ])
+                ->groupBy('products.id', 'products.name', 'products.description', 'products.price', 'categories.name', 'categories.id', 'products.created_at');
 
-            return DataTables::of($users)
+            return DataTables::of($products)
                 ->filterColumn('category', function ($query, $keyword) {
                     $query->where('categories.name', 'like', "%{$keyword}%");
                 })
-                ->editColumn('created_at', function ($user) {
-                    return $user->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+                ->editColumn('created_at', function ($product) {
+                    return $product->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
                 })
                 ->make(true);
         }

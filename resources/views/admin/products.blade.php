@@ -20,6 +20,7 @@
                             <th>Description</th>
                             <th>Price</th>
                             <th>Category</th>
+                            <th>Stock Quantity</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -31,6 +32,7 @@
                             <th>Description</th>
                             <th>Price</th>
                             <th>Category</th>
+                            <th>Stock Quantity</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -155,7 +157,6 @@
 <!-- Page level plugins -->
 <script src="{{ asset('theme/vendor/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('theme/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Page level custom scripts -->
 <script src="{{ asset('theme/js/demo/datatables-demo.js') }}"></script>
 @endpush
