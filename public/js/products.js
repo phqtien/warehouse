@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'description' },
             { data: 'price' },
             { data: 'category' },
-            { data: 'stock_quantity' },
+            {
+                data: 'stock_quantity',
+                searchable: false,
+
+            },
             { data: 'created_at' },
             {
                 data: null,

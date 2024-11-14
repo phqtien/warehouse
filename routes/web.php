@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\PurchaseOrderDetailController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/purchase-orders', [PurchaseOrderController::class, 'store']);
         Route::put('/purchase-orders/{id}', [PurchaseOrderController::class, 'update']);
         Route::delete('/purchase-orders/{id}', [PurchaseOrderController::class, 'destroy']);
+
+        Route::get('/purchase-order-details', [PurchaseOrderDetailController::class, 'index']);
+        Route::get('/purchase-order-details/fetch', [PurchaseOrderDetailController::class, 'fetchPurchaseOrderDetails']);
     });
 
     Route::middleware('role:admin')->group(function () {

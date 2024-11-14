@@ -17,17 +17,17 @@ class ShelfSeeder extends Seeder
             foreach ($warehouses as $warehouse) {
                 Shelf::create([
                     'warehouse_id' => $warehouse->id,
-                    'name' => 'Shelf A - ' . $warehouse->name,
+                    'name' => 'Shelf A',
                     'capacity' => 1000,
                 ]);
                 Shelf::create([
                     'warehouse_id' => $warehouse->id,
-                    'name' => 'Shelf B - ' . $warehouse->name,
+                    'name' => 'Shelf B',
                     'capacity' => 1000,
                 ]);
                 Shelf::create([
                     'warehouse_id' => $warehouse->id,
-                    'name' => 'Shelf C - ' . $warehouse->name,
+                    'name' => 'Shelf C',
                     'capacity' => 1000,
                 ]);
             }

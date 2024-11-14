@@ -8,7 +8,6 @@
         <div class="card-header d-flex justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-primary">Products Management</h6>
             <button type="button" class="btn btn-primary" id="showNewProductBtn">New Product</button>
-
         </div>
         <div class="card-body">
             <div class="table-responsive">

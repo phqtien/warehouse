@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
+use App\Models\Warehouse;
+use App\Models\Shelf;
+use App\Models\ShelfProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,8 +22,18 @@ class PurchaseOrderController extends Controller
 
     public function newPurchaseOrder()
     {
-        return view('/user/newPurchaseOrder');
+        $warehouses = Warehouse::join('shelves', 'shelves.warehouse_id', '=', 'warehouses.id')
+            ->select([
+                'warehouses.id as warehouse_id',
+                'warehouses.name as warehouse_name',
+                'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
+            ])
+            ->get();
+
+        return view('user.newPurchaseOrder', compact('warehouses'));
     }
+
 
     public function editPurchaseOrder($id)
     {
@@ -31,7 +44,16 @@ class PurchaseOrderController extends Controller
             ->select('purchase_order_details.*', 'products.name as product_name')
             ->get();
 
-        return view('/user/editPurchaseOrder', compact('purchaseOrder', 'products'));
+        $warehouses = Warehouse::join('shelves', 'shelves.warehouse_id', '=', 'warehouses.id')
+            ->select([
+                'warehouses.id as warehouse_id',
+                'warehouses.name as warehouse_name',
+                'shelves.id as shelf_id',
+                'shelves.name as shelf_name',
+            ])
+            ->get();
+
+        return view('/user/editPurchaseOrder', compact('purchaseOrder', 'products', 'warehouses'));
     }
 
     public function fetchPurchaseOrders(Request $request)
@@ -65,10 +87,12 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'warehouse_id' => 'required|integer',
             'order_date' => 'required|date',
             'status' => 'required|string',
             'products' => 'required|array',
             'products.*.id' => 'required|integer',
+            'products.*.shelf_id' => 'required|integer',
             'products.*.price' => 'required|numeric',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
@@ -79,7 +103,6 @@ class PurchaseOrderController extends Controller
         ]);
 
         foreach ($request->products as $product) {
-
             PurchaseOrderDetail::create([
                 'purchase_order_id' => $purchaseOrder->id,
                 'product_id' => $product['id'],
@@ -88,16 +111,30 @@ class PurchaseOrderController extends Controller
             ]);
         }
 
+        // If status is 'Done', add sản phẩm vào bảng products to shelf_products
+        if ($request->status === 'Done') {
+            foreach ($request->products as $product) {
+                ShelfProduct::create([
+                    'shelf_id' => $product['shelf_id'],
+                    'product_id' => $product['id'],
+                    'quantity' => $product['quantity'],
+                ]);
+            }
+        }
+
         return response()->json(['message' => 'Order created successfully!'], 201);
     }
+
 
     public function update(Request $request, $id)
     {
         $request->validate([
+            'warehouse_id' => 'required|integer',
             'order_date' => 'required|date',
             'status' => 'required|string',
             'products' => 'required|array',
             'products.*.id' => 'required|integer',
+            'products.*.shelf_id' => 'required|integer',
             'products.*.price' => 'required|numeric',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
@@ -124,7 +161,6 @@ class PurchaseOrderController extends Controller
                     ->where('product_id', $productId)
                     ->update(['quantity' => $product['quantity']]);
 
-                
                 unset($existingProductIds[$existingProductIndex]);
             } else {
                 //The product is not exist, create it
@@ -142,6 +178,17 @@ class PurchaseOrderController extends Controller
             PurchaseOrderDetail::where('purchase_order_id', $id)
                 ->where('product_id', $productId)
                 ->delete();
+        }
+
+        // If status is 'Done', add sản phẩm vào bảng products to shelf_products
+        if ($request->status === 'Done') {
+            foreach ($request->products as $product) {
+                ShelfProduct::create([
+                    'shelf_id' => $product['shelf_id'],
+                    'product_id' => $product['id'],
+                    'quantity' => $product['quantity'],
+                ]);
+            }
         }
 
         return response()->json([

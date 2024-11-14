@@ -14,15 +14,14 @@ class ProductController extends Controller
     public function index()
     {
         $subcategories = Category::whereNotNull('parent_id')->get();
-        return view('/admin/products', compact('subcategories'));
+        return view('/user/products', compact('subcategories'));
     }
 
     public function fetchProducts(Request $request)
     {
         if ($request->ajax()) {
             $products = Product::join('categories', 'products.category_id', '=', 'categories.id')
-                ->leftJoin('purchase_order_details', 'purchase_order_details.product_id', '=', 'products.id')
-                ->leftjoin('purchase_orders', 'purchase_orders.id', '=', 'purchase_order_details.purchase_order_id')
+                ->leftJoin('shelf_products', 'shelf_products.product_id', '=', 'products.id')
                 ->select([
                     'products.id',
                     'products.name',
@@ -31,7 +30,7 @@ class ProductController extends Controller
                     'categories.name as category',
                     'categories.id as category_id',
                     'products.created_at',
-                    DB::raw('COALESCE(SUM(CASE WHEN purchase_orders.status = "Done" THEN purchase_order_details.quantity ELSE 0 END), 0) as stock_quantity'),
+                    DB::raw('SUM(shelf_products.quantity) as stock_quantity'),
                 ])
                 ->groupBy('products.id', 'products.name', 'products.description', 'products.price', 'categories.name', 'categories.id', 'products.created_at');
 
