@@ -5,7 +5,7 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header d-flex justify-content-between py-3">
+        <div class="card-header d-flex align-items-center justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-primary">Purchase Order Detail</h6>
             <div class="">
                 <select id="statusFilter" class="form-control">

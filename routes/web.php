@@ -8,6 +8,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PurchaseOrderDetailController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -37,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/purchase-order-details', [PurchaseOrderDetailController::class, 'index']);
         Route::get('/purchase-order-details/fetch', [PurchaseOrderDetailController::class, 'fetchPurchaseOrderDetails']);
+
+        Route::get('/inventories', [InventoryController::class, 'index']);
+        Route::get('/inventories/fetch', [InventoryController::class, 'fetchInventories']);
     });
 
     Route::middleware('role:admin')->group(function () {
