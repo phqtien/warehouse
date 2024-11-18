@@ -59,7 +59,7 @@ class PurchaseOrderController extends Controller
     public function fetchPurchaseOrders(Request $request)
     {
         if ($request->ajax()) {
-            $purchaseOrders = PurchaseOrder::All();
+            $purchaseOrders = PurchaseOrder::query();
 
             return DataTables::of($purchaseOrders)
                 ->editColumn('created_at', function ($purchaseOrder) {

@@ -120,17 +120,6 @@ function calculateTotal(input) {
 
     if (input.classList.contains('product-quantity')) {
         const minQuantity = 0;
-        const totalQuantity = getTotalQuantity();
-        const warehouseCapacity = getWarehouseCapacity();
-        const submitButton = document.getElementById('submitNewPurchaseOrderBtn');
-
-        if (totalQuantity > warehouseCapacity) {
-            quantity = minQuantity;
-            input.value = minQuantity;
-            alert("The total quantity exceeds the available capacity of the selected warehouse. Max allowed: " + warehouseCapacity);
-        } else {
-            submitButton.disabled = false;
-        }
 
         if (quantity < minQuantity) {
             quantity = minQuantity;

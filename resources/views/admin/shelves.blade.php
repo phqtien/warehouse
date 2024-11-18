@@ -62,7 +62,7 @@
                         </div>
                         <div>
                             <select class="form-control" id="newShelfWarehouse" required>
-                                <option value="" disabled selected>Select Category</option>
+                                <option value="" disabled selected>Warehouse</option>
                                 @foreach($warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                 @endforeach

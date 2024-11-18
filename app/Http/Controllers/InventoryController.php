@@ -46,9 +46,7 @@ class InventoryController extends Controller
                 }
             }
 
-            $purchaseOrderDetails = $query->get();
-
-            return DataTables::of($purchaseOrderDetails)
+            return DataTables::of($query)
                 ->make(true);
         }
 
