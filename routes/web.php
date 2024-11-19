@@ -7,7 +7,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\PurchaseOrderDetailController;
+use App\Http\Controllers\SaleOrderDetailController;
 use App\Http\Controllers\InventoryController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -41,6 +43,15 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/inventories', [InventoryController::class, 'index']);
         Route::get('/inventories/fetch', [InventoryController::class, 'fetchInventories']);
+
+        Route::get('/sale-orders', [SaleOrderController::class, 'index']);
+        Route::get('/sale-orders/fetch', [SaleOrderController::class, 'fetchSaleOrders']);
+        Route::get('/sale-orders/new-sale-order', [SaleOrderController::class, 'newSaleOrder']);
+        Route::get('/sale-orders/edit-sale-order/{id}', [SaleOrderController::class, 'editSaleOrder']);
+        Route::get('/sale-orders/search-product-by-name', [SaleOrderController::class, 'searchProductByName']);
+        Route::post('/sale-orders', [SaleOrderController::class, 'store']);
+        Route::put('/sale-orders/{id}', [SaleOrderController::class, 'update']);
+        Route::delete('/sale-orders/{id}', [SaleOrderController::class, 'destroy']);
     });
 
     Route::middleware('role:admin')->group(function () {

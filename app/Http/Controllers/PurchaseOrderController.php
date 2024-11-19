@@ -87,12 +87,28 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'warehouse_id' => 'required|integer',
+            'warehouse_id' => [
+                'nullable',
+                'integer',
+                function ($value, $fail) use ($request) {
+                    if ($request->input('status') === 'Done' && !$value) {
+                        $fail('The warehouse ID is required when the status is "Done".');
+                    }
+                },
+            ],
             'order_date' => 'required|date',
             'status' => 'required|string',
             'products' => 'required|array',
             'products.*.id' => 'required|integer',
-            'products.*.shelf_id' => 'required|integer',
+            'products.*.shelf_id' => [
+                'nullable',
+                'integer',
+                function ($value, $fail) use ($request) {
+                    if ($request->input('status') === 'Done' && !$value) {
+                        $fail('The shelf ID is required when the status is "Done".');
+                    }
+                },
+            ],
             'products.*.price' => 'required|numeric',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
@@ -111,14 +127,18 @@ class PurchaseOrderController extends Controller
             ]);
         }
 
-        // If status is 'Done', add sản phẩm vào bảng products to shelf_products
+        // If status is 'Done', add products to shelf_products
         if ($request->status === 'Done') {
             foreach ($request->products as $product) {
-                ShelfProduct::create([
-                    'shelf_id' => $product['shelf_id'],
-                    'product_id' => $product['id'],
-                    'quantity' => $product['quantity'],
-                ]);
+                ShelfProduct::updateOrCreate(
+                    [
+                        'product_id' => $product['id'],
+                        'shelf_id' => $product['shelf_id'],
+                    ],
+                    [
+                        'quantity' => DB::raw('quantity + ' . $product['quantity']),
+                    ]
+                );
             }
         }
 
@@ -153,24 +173,19 @@ class PurchaseOrderController extends Controller
         // Foreach products in request
         foreach ($request->products as $product) {
             $productId = $product['id'];
-            $existingProductIndex = array_search($productId, $existingProductIds);
 
-            // The product is exist, update it
-            if ($existingProductIndex !== false) {
-                PurchaseOrderDetail::where('purchase_order_id', $id)
-                    ->where('product_id', $productId)
-                    ->update(['quantity' => $product['quantity']]);
-
-                unset($existingProductIds[$existingProductIndex]);
-            } else {
-                //The product is not exist, create it
-                PurchaseOrderDetail::create([
+            PurchaseOrderDetail::updateOrCreate(
+                [
                     'purchase_order_id' => $id,
                     'product_id' => $productId,
+                ],
+                [
                     'quantity' => $product['quantity'],
                     'price' => $product['price'],
-                ]);
-            }
+                ]
+            );
+
+            $existingProductIds = array_diff($existingProductIds, [$productId]);
         }
 
         // Delete products that are not in request
@@ -180,14 +195,18 @@ class PurchaseOrderController extends Controller
                 ->delete();
         }
 
-        // If status is 'Done', add sản phẩm vào bảng products to shelf_products
+        // If status is 'Done', add products to shelf_products
         if ($request->status === 'Done') {
             foreach ($request->products as $product) {
-                ShelfProduct::create([
-                    'shelf_id' => $product['shelf_id'],
-                    'product_id' => $product['id'],
-                    'quantity' => $product['quantity'],
-                ]);
+                ShelfProduct::updateOrCreate(
+                    [
+                        'product_id' => $product['id'],
+                        'shelf_id' => $product['shelf_id'],
+                    ],
+                    [
+                        'quantity' => DB::raw('quantity + ' . $product['quantity']),
+                    ]
+                );
             }
         }
 
@@ -198,8 +217,8 @@ class PurchaseOrderController extends Controller
 
     public function destroy($id)
     {
-        $user = PurchaseOrder::findOrFail($id);
-        $user->delete();
+        $order = PurchaseOrder::findOrFail($id);
+        $order->delete();
 
         return response()->json([
             'message' => 'PurchaseOrder deleted successfully.'
