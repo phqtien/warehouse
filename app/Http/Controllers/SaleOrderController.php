@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SaleOrder;
 use App\Models\SaleOrderDetail;
-use App\Models\Warehouse;
 use App\Models\Shelf;
+use App\Models\Customer;
 use App\Models\ShelfProduct;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -29,18 +29,21 @@ class SaleOrderController extends Controller
     {
         $saleOrder = SaleOrder::findOrFail($id);
 
+        $customer = Customer::findOrFail($saleOrder->customer_id);
+
         $products = SaleOrderDetail::join('products', 'sale_order_details.product_id', '=', 'products.id')
             ->where('sale_order_details.sale_order_id', $id)
             ->select('sale_order_details.*', 'products.name as product_name', 'products.price as product_price')
             ->get();
 
-        return view('/user/editSaleOrder', compact('saleOrder', 'products'));
+        return view('/user/editSaleOrder', compact('saleOrder', 'products', 'customer'));
     }
 
     public function fetchSaleOrders(Request $request)
     {
         if ($request->ajax()) {
-            $saleOrders = SaleOrder::query();
+            $saleOrders = SaleOrder::join('customers', 'customers.id', '=', 'sale_orders.customer_id')
+            ->select('sale_orders.*', 'customers.name as name');
 
             return DataTables::of($saleOrders)
                 ->editColumn('created_at', function ($saleOrder) {
@@ -50,6 +53,23 @@ class SaleOrderController extends Controller
         }
 
         return abort(404);
+    }
+
+    public function searchCustomerByPhone(Request $request) {
+        $phone = $request->input('phone');
+
+        $customer = Customer::where('phone', $phone)->first();
+
+        if (!$customer) {
+            return response()->json(['error' => 'Customer not found'], 404);
+        }
+
+        return response()->json([
+            'name' => $customer->name,
+            'email' => $customer->email,
+            'address' => $customer->address,
+            'id' => $customer->id,
+        ]);
     }
 
     public function searchProductByName(Request $request)
@@ -92,9 +112,7 @@ class SaleOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string',
-            'address' => 'required|string',
+            'customer_id' => 'required|integer',
             'status' => 'required|string',
             'products' => 'required|array',
             'products.*.id' => 'required|integer',
@@ -104,9 +122,7 @@ class SaleOrderController extends Controller
         ]);
 
         $saleOrder = SaleOrder::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
+            'customer_id' => $request->customer_id,
             'status' => $request->status,
         ]);
 
@@ -143,9 +159,7 @@ class SaleOrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string',
-            'address' => 'required|string',
+            'customer_id' => 'required|integer',
             'status' => 'required|string',
             'products' => 'required|array',
             'products.*.id' => 'required|integer',
@@ -179,9 +193,7 @@ class SaleOrderController extends Controller
         $saleOrder = SaleOrder::findOrFail($id);
 
         $saleOrder->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
+            'customer_id' => $request->customer_id,
             'status' => $request->status,
         ]);
 

@@ -50,6 +50,7 @@
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/customers">Customers</a>
                 <a class="collapse-item" href="/products">Products</a>
                 <a class="collapse-item" href="/inventories">Inventories</a>
                 <a class="collapse-item" href="/purchase-orders">Puchase Orders</a>

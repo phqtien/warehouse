@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -29,6 +30,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
+        Route::get('/customers', [CustomerController::class, 'index']);
+        Route::get('/customers/fetch', [CustomerController::class, 'fetchCustomers']);
+        Route::post('/customers', [CustomerController::class, 'store']);
+        Route::put('/customers/{id}', [CustomerController::class, 'update']);
+        Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+
         Route::get('/purchase-orders', [PurchaseOrderController::class, 'index']);
         Route::get('/purchase-orders/fetch', [PurchaseOrderController::class, 'fetchPurchaseOrders']);
         Route::get('/purchase-orders/new-purchase-order', [PurchaseOrderController::class, 'newPurchaseOrder']);
@@ -49,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/sale-orders/new-sale-order', [SaleOrderController::class, 'newSaleOrder']);
         Route::get('/sale-orders/edit-sale-order/{id}', [SaleOrderController::class, 'editSaleOrder']);
         Route::get('/sale-orders/search-product-by-name', [SaleOrderController::class, 'searchProductByName']);
+        Route::get('/sale-orders/search-customer-by-phone', [SaleOrderController::class, 'searchCustomerByPhone']);
         Route::post('/sale-orders', [SaleOrderController::class, 'store']);
         Route::put('/sale-orders/{id}', [SaleOrderController::class, 'update']);
         Route::delete('/sale-orders/{id}', [SaleOrderController::class, 'destroy']);

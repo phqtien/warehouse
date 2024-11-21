@@ -11,14 +11,18 @@
         <div class="card-body">
             <form id="editSaleOrderForm">
                 <div class="mb-3">
-                    <div class="col col-md-6 mb-3 p-0">
-                        <input type="text" class="form-control" id="customer-name" value="{{ $saleOrder->name }}" placeholder="Customer name" required>
+                    <div class="d-flex justify-content-between col col-md-6 mb-3 p-0">
+                        <input type="text" class="form-control" value="{{ $customer->phone }}" id="customer-phone" placeholder="Customer phone" required>
+                        <button type="button" class="btn btn-primary" data-id="{{ $customer->id }}" id="search-customer-btn" onclick="searchCustomerByPhone(this)">Search</button>
                     </div>
                     <div class="col col-md-6 mb-3 p-0">
-                        <input type="text" class="form-control" id="customer-phone" value="{{ $saleOrder->phone }}" placeholder="Customer phone" required>
+                        <input type="text" class="form-control" value="{{ $customer->name }}" id="customer-name" placeholder="Customer name" readonly required>
                     </div>
                     <div class="col col-md-6 mb-3 p-0">
-                        <input type="text" class="form-control" id="customer-address" value="{{ $saleOrder->address }}" placeholder="Customer address" required>
+                        <input type="text" class="form-control" value="{{ $customer->email }}" id="customer-email" placeholder="Customer email" readonly required>
+                    </div>
+                    <div class="col col-md-6 mb-3 p-0">
+                        <input type="text" class="form-control" value="{{ $customer->address }}" id="customer-address" placeholder="Customer address" readonly required>
                     </div>
 
                     <div class="mb-3 col col-md-6 mb-3 p-0 d-flex justify-content-between">

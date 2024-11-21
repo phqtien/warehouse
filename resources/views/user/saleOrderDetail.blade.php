@@ -22,11 +22,8 @@
                 <table class="table table-striped table-bordered" id="saleOrderDetailsTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Order ID</th>
                             <th>Status</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
                             <th>Product</th>
                             <th>Quantity</th>
                             <th>Warehouse</th>
@@ -35,11 +32,8 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
+                            <th>Order ID</th>
                             <th>Status</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
                             <th>Product</th>
                             <th>Quantity</th>
                             <th>Warehouse</th>

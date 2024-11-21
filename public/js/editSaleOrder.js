@@ -18,6 +18,26 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 });
 
+function searchCustomerByPhone() {
+    const phone = document.getElementById("customer-phone").value;
+
+    axios.get(`/sale-orders/search-customer-by-phone?phone=${phone}`)
+        .then(response => {
+            const name = response.data.name;
+            const email = response.data.email;
+            const address = response.data.address;
+            const id = response.data.id;
+
+            document.getElementById("customer-name").value = name;
+            document.getElementById("customer-email").value = email;
+            document.getElementById("customer-address").value = address;
+            document.getElementById("search-customer-btn").dataset.id = id;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
 function searchProductByName(input) {
     const productName = input.value;
     const row = input.closest('tr');
@@ -179,9 +199,7 @@ function deleteRow(button) {
 }
 
 function updateSaleOrder(id) {
-    const name = document.getElementById('customer-name').value;
-    const phone = document.getElementById('customer-phone').value;
-    const address = document.getElementById('customer-address').value;
+    const customerId = document.getElementById("search-customer-btn").dataset.id;
     const orderStatus = document.querySelector('input[name="status"]:checked').value;
     const products = [];
     const rows = document.querySelectorAll('#product-body tr');
@@ -207,9 +225,7 @@ function updateSaleOrder(id) {
     });
 
     axios.put(`/sale-orders/${id}`, {
-        name: name,
-        phone: phone,
-        address: address,
+        customer_id: customerId, 
         status: orderStatus,
         products: products
     })

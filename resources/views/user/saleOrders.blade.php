@@ -18,8 +18,6 @@
                             <th>ID</th>
                             <th>Status</th>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -29,8 +27,6 @@
                             <th>ID</th>
                             <th>Status</th>
                             <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>

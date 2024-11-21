@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'id' },
             { data: 'status' },
             { data: 'name' },
-            { data: 'phone' },
-            { data: 'address' },
             { data: 'created_at' },
             {
                 data: null,

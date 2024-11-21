@@ -24,9 +24,6 @@ class SaleOrderDetailController extends Controller
                 ->select([
                     'sale_orders.id',
                     'sale_orders.status',
-                    'sale_orders.name',
-                    'sale_orders.phone',
-                    'sale_orders.address',
                     'products.name as product_name',
                     'sale_order_details.quantity as quantity',
                     'warehouses.name as warehouse',

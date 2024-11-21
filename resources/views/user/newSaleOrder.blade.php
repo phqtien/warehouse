@@ -10,14 +10,18 @@
         <div class="card-body">
             <form id="newSaleOrderForm">
                 <div class="mb-3">
-                    <div class="col col-md-6 mb-3 p-0">
-                        <input type="text" class="form-control" id="customer-name" placeholder="Customer name" required>
-                    </div>
-                    <div class="col col-md-6 mb-3 p-0">
+                    <div class="d-flex justify-content-between col col-md-6 mb-3 p-0">
                         <input type="text" class="form-control" id="customer-phone" placeholder="Customer phone" required>
+                        <button type="button" class="btn btn-primary" id="search-customer-btn" onclick="searchCustomerByPhone(this)">Search</button>
                     </div>
                     <div class="col col-md-6 mb-3 p-0">
-                        <input type="text" class="form-control" id="customer-address" placeholder="Customer address" required>
+                        <input type="text" class="form-control" id="customer-name" placeholder="Customer name" readonly required>
+                    </div>
+                    <div class="col col-md-6 mb-3 p-0">
+                        <input type="text" class="form-control" id="customer-email" placeholder="Customer email" readonly required>
+                    </div>
+                    <div class="col col-md-6 mb-3 p-0">
+                        <input type="text" class="form-control" id="customer-address" placeholder="Customer address" readonly required>
                     </div>
 
                     <div class="mb-3 col col-md-6 mb-3 p-0 d-flex justify-content-between">

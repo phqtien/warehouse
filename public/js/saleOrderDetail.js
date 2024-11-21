@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
         columns: [
             { data: 'id' },
             { data: 'status' },
-            { data: 'name' },
-            { data: 'phone' },
-            { data: 'address' },
             { data: 'product_name' },
             { data: 'quantity' },
             { data: 'warehouse' },
