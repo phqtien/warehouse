@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sale-orders', [SaleOrderController::class, 'store']);
         Route::put('/sale-orders/{id}', [SaleOrderController::class, 'update']);
         Route::delete('/sale-orders/{id}', [SaleOrderController::class, 'destroy']);
+
+        Route::get('/sale-order-details', [SaleOrderDetailController::class, 'index']);
+        Route::get('/sale-order-details/fetch', [SaleOrderDetailController::class, 'fetchSaleOrderDetails']);
     });
 
     Route::middleware('role:admin')->group(function () {

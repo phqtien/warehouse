@@ -55,6 +55,7 @@
                 <a class="collapse-item" href="/purchase-orders">Puchase Orders</a>
                 <a class="collapse-item" href="/purchase-order-details">Puchase Order Details</a>
                 <a class="collapse-item" href="/sale-orders">Sale Orders</a>
+                <a class="collapse-item" href="/sale-order-details">Sale Order Details</a>
             </div>
         </div>
     </li>
