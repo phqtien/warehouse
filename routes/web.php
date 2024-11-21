@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/sale-orders/edit-sale-order/{id}', [SaleOrderController::class, 'editSaleOrder']);
         Route::get('/sale-orders/search-product-by-name', [SaleOrderController::class, 'searchProductByName']);
         Route::get('/sale-orders/search-customer-by-phone', [SaleOrderController::class, 'searchCustomerByPhone']);
+        Route::get('/sale-orders/export', [SaleOrderController::class, 'export']);
         Route::post('/sale-orders', [SaleOrderController::class, 'store']);
         Route::put('/sale-orders/{id}', [SaleOrderController::class, 'update']);
         Route::delete('/sale-orders/{id}', [SaleOrderController::class, 'destroy']);

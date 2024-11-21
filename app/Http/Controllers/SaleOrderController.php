@@ -11,9 +11,18 @@ use App\Models\ShelfProduct;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\SaleOrdersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SaleOrderController extends Controller
 {
+    public function export(Request $request)
+    {
+        $status = $request->input('status', '');
+
+        return Excel::download(new SaleOrdersExport($status), 'saleOrders.xlsx');
+    }
+
     public function index()
     {
         return view('/user/saleOrders');
@@ -43,7 +52,11 @@ class SaleOrderController extends Controller
     {
         if ($request->ajax()) {
             $saleOrders = SaleOrder::join('customers', 'customers.id', '=', 'sale_orders.customer_id')
-            ->select('sale_orders.*', 'customers.name as name');
+                ->select('sale_orders.*', 'customers.name as name');
+
+            if ($request->has('status') && $request->status != '') {
+                $saleOrders->where('sale_orders.status', $request->status);
+            }
 
             return DataTables::of($saleOrders)
                 ->editColumn('created_at', function ($saleOrder) {
@@ -55,7 +68,8 @@ class SaleOrderController extends Controller
         return abort(404);
     }
 
-    public function searchCustomerByPhone(Request $request) {
+    public function searchCustomerByPhone(Request $request)
+    {
         $phone = $request->input('phone');
 
         $customer = Customer::where('phone', $phone)->first();
@@ -233,9 +247,9 @@ class SaleOrderController extends Controller
                 $shelfProduct = ShelfProduct::where('product_id', $product['id'])
                     ->where('shelf_id', $product['shelf_id'])
                     ->first();
-    
+
                 $newQuantity = $shelfProduct->quantity - $product['quantity'];
-    
+
                 if ($newQuantity == 0) {
                     $shelfProduct->delete();
                 } else {

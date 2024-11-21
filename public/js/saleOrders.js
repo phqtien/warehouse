@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ajax: {
             url: '/sale-orders/fetch',
             type: 'GET',
+            data: function (d) {
+                d.status = document.getElementById('statusFilter').value;
+            }
         },
         columns: [
             { data: 'id' },
@@ -34,4 +37,29 @@ document.addEventListener('DOMContentLoaded', function () {
             "<'row'<'col-sm-12't>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>"
     });
+
+    document.getElementById('statusFilter').addEventListener('change', function () {
+        table.ajax.reload();
+    });
+
+    document.getElementById('export-btn').addEventListener('click', function () {
+        var status = document.getElementById('statusFilter').value;
+    
+        axios.get('/sale-orders/export', {
+            params: {
+                status: status
+            },
+            responseType: 'blob'
+        })
+        .then(function (response) {
+            var link = document.createElement('a');
+            var url = window.URL.createObjectURL(new Blob([response.data]));
+            link.href = url;
+            link.download = 'saleOrders.xlsx';
+            link.click();
+        })
+        .catch(function (error) {
+            console.log('Error:', error);
+        });
+    });    
 });

@@ -6,9 +6,20 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Sale Orders Management</h6>
+            <div class="">
+                <h6 class="m-0 font-weight-bold text-primary mb-1">Sale Orders Management</h6>
+                <div class="d-flex">
+                    <select id="statusFilter" class="form-control">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirm">Confirm</option>
+                        <option value="Done">Done</option>
+                        <option value="Cancel">Cancel</option>
+                    </select>
+                    <button type="button" id="export-btn" class="btn btn-success">Export</button>
+                </div>
+            </div>
             <a href="/sale-orders/new-sale-order" class="btn btn-primary" id="showNewSaleOrderBtn">New Sale Order</a>
-
         </div>
         <div class="card-body">
             <div class="table-responsive">
