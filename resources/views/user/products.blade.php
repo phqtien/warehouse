@@ -5,10 +5,9 @@
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header d-flex justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Products Manager</h6>
+        <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Products Management</h6>
             <button type="button" class="btn btn-primary" id="showNewProductBtn">New Product</button>
-
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -19,8 +18,8 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Price</th>
-                            <th>Stock Quantity</th>
                             <th>Category</th>
+                            <th>Stock Quantity</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -31,8 +30,8 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Price</th>
-                            <th>Stock Quantity</th>
                             <th>Category</th>
+                            <th>Stock Quantity</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -67,16 +66,13 @@
                             <input type="number" class="form-control" id="newProductPrice" placeholder="Price" min="0" required>
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="newProductStockQuantity" placeholder="StockQuantity" min="0" required>
+                            <select class="form-control" id="newProductCategory" required>
+                                <option value="" disabled selected>Select Category</option>
+                                @foreach($subcategories as $subcategory)
+                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <select class="form-control" id="newProductCategory" required>
-                            <option value="" disabled selected>Select Category</option>
-                            @foreach($subcategories as $subcategory)
-                            <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                            @endforeach
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -108,16 +104,13 @@
                             <input type="number" class="form-control" id="editProductPrice" placeholder="Price" min="0" required>
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control" id="editProductStockQuantity" placeholder="StockQuantity" min="0" required>
+                            <select class="form-control" id="editProductCategory" required>
+                                <option value="" disabled selected>Select Category</option>
+                                @foreach($subcategories as $subcategory)
+                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <select class="form-control" id="editProductCategory" required>
-                            <option value="" disabled selected>Select Category</option>
-                            @foreach($subcategories as $subcategory)
-                            <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                            @endforeach
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -163,7 +156,6 @@
 <!-- Page level plugins -->
 <script src="{{ asset('theme/vendor/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('theme/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Page level custom scripts -->
 <script src="{{ asset('theme/js/demo/datatables-demo.js') }}"></script>
 @endpush

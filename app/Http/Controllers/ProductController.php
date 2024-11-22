@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -13,21 +14,32 @@ class ProductController extends Controller
     public function index()
     {
         $subcategories = Category::whereNotNull('parent_id')->get();
-        return view('/admin/products', compact('subcategories'));
+        return view('/user/products', compact('subcategories'));
     }
 
     public function fetchProducts(Request $request)
     {
         if ($request->ajax()) {
-            $users = Product::join('categories', 'products.category_id', '=', 'categories.id')
-                ->select(['products.id', 'products.name', 'products.description', 'products.price', 'products.stock_quantity', 'categories.name as category', 'categories.id as category_id', 'products.created_at']);
+            $products = Product::join('categories', 'products.category_id', '=', 'categories.id')
+                ->leftJoin('shelf_products', 'shelf_products.product_id', '=', 'products.id')
+                ->select([
+                    'products.id',
+                    'products.name',
+                    'products.description',
+                    'products.price',
+                    'categories.name as category',
+                    'categories.id as category_id',
+                    'products.created_at',
+                    DB::raw('SUM(shelf_products.quantity) as stock_quantity'),
+                ])
+                ->groupBy('products.id', 'products.name', 'products.description', 'products.price', 'categories.name', 'categories.id', 'products.created_at');
 
-            return DataTables::of($users)
+            return DataTables::of($products)
                 ->filterColumn('category', function ($query, $keyword) {
                     $query->where('categories.name', 'like', "%{$keyword}%");
                 })
-                ->editColumn('created_at', function ($user) {
-                    return $user->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+                ->editColumn('created_at', function ($product) {
+                    return $product->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
                 })
                 ->make(true);
         }
@@ -40,7 +52,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
             'description' => 'required|string|max:1000',
             'category_id' => 'required|integer',
         ]);
@@ -48,7 +59,6 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
             'description' => $request->description,
             'category_id' => $request->category_id,
         ]);
@@ -63,7 +73,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
             'description' => 'required|string|max:1000',
             'category_id' => 'required|integer',
         ]);
@@ -73,7 +82,6 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
             'description' => $request->description,
             'category_id' => $request->category_id,
         ]);

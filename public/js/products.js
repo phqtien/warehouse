@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'name' },
             { data: 'description' },
             { data: 'price' },
-            { data: 'stock_quantity' },
             { data: 'category' },
+            {
+                data: 'stock_quantity',
+                searchable: false,
+
+            },
             { data: 'created_at' },
             {
                 data: null,
@@ -53,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
             name: document.getElementById('newProductName').value,
             description: document.getElementById('newProductDescription').value,
             price: document.getElementById('newProductPrice').value,
-            stock_quantity: document.getElementById('newProductStockQuantity').value,
             category_id: document.getElementById('newProductCategory').value
         };
 
@@ -76,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var data = row.data();
             document.getElementById('editProductName').value = data.name;
             document.getElementById('editProductPrice').value = data.price;
-            document.getElementById('editProductStockQuantity').value = data.stock_quantity;
             document.getElementById('editProductDescription').value = data.description;
             document.getElementById('editProductCategory').value = data.category_id;
             document.getElementById('saveEditProductBtn').dataset.id = data.id;
@@ -92,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
             name: document.getElementById('editProductName').value,
             description: document.getElementById('editProductDescription').value,
             price: document.getElementById('editProductPrice').value,
-            stock_quantity: document.getElementById('editProductStockQuantity').value,
             category_id: document.getElementById('editProductCategory').value
         };
 

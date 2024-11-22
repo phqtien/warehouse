@@ -3,63 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\PurchaseOrderDetail;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseOrderDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return view('/user/purchaseOrderDetail');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function fetchPurchaseOrderDetails(Request $request)
     {
-        //
-    }
+        if ($request->ajax()) {
+            $query = PurchaseOrderDetail::join('purchase_orders', 'purchase_order_details.purchase_order_id', '=', 'purchase_orders.id')
+                ->join('products', 'purchase_order_details.product_id', '=', 'products.id')
+                ->select([
+                    'purchase_orders.id as id',
+                    'purchase_orders.order_date',
+                    'purchase_orders.status',
+                    'products.name as product_name',
+                    'products.price as price',
+                    'purchase_order_details.quantity as quantity',
+                    'purchase_orders.created_at'
+                ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            if ($request->has('status') && $request->status != '') {
+                $query->where('purchase_orders.status', $request->status);
+            }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PurchaseOrderDetail $purchaseOrderDetail)
-    {
-        //
-    }
+            $purchaseOrderDetails = $query->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PurchaseOrderDetail $purchaseOrderDetail)
-    {
-        //
-    }
+            return DataTables::of($purchaseOrderDetails)
+                ->editColumn('created_at', function ($purchaseOrderDetail) {
+                    return $purchaseOrderDetail->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+                })
+                ->make(true);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PurchaseOrderDetail $purchaseOrderDetail)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PurchaseOrderDetail $purchaseOrderDetail)
-    {
-        //
+        return abort(404);
     }
 }

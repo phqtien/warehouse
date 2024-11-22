@@ -6,19 +6,18 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Users Management</h6>
-            <button type="button" class="btn btn-primary" id="showNewUserBtn">New User</button>
+            <h6 class="m-0 font-weight-bold text-primary">Warehouses Management</h6>
+            <button type="button" class="btn btn-primary" id="showNewWarehouseBtn">New Warehouse</button>
 
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="usersTable">
+                <table class="table table-striped table-bordered" id="warehousesTable">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Address</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -27,8 +26,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Address</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -42,63 +40,80 @@
 
 </div>
 
-<!-- Modal for New User -->
-<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
+<!-- Modal for New Warehouse -->
+<div class="modal fade" id="newWarehouseModal" tabindex="-1" aria-labelledby="newWarehouseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newUserModalLabel">New User</h5>
+                <h5 class="modal-title" id="newWarehouseModalLabel">New Warehouse</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
-            <form id="newUserForm">
+            <form id="newWarehouseForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="newUserName" placeholder="Name" required>
+                        <input type="text" class="form-control" id="newWarehouseName" placeholder="Name" required>
                     </div>
                     <div class="mb-3">
-                        <input type="email" class="form-control" id="newUserEmail" placeholder="Email" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="newUserPassword" placeholder="Password" minlength="5" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="newUserConfirmPassword" placeholder="Confirm password" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="radio" name="role" value="user" checked> User
-                    </div>
-                    <div>
-                        <input type="radio" name="role" value="admin"> Admin
+                        <input type="text" class="form-control" id="newWarehouseAddress" placeholder="Address" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submitNewUserBtn">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submitNewWarehouseBtn">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Modal for Delete Confirmation -->
-<div class="modal fade modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+<!-- Modal for Edit Warehouse -->
+<div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteUserModalLabel">Confirm Delete</h5>
+                <h5 class="modal-title" id="editWarehouseModalLabel">Edit Warehouse</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <form id="editWarehouseForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="editWarehouseName" placeholder="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="editWarehouseAddress" placeholder="Address" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" id="deleteWarehouseBtn" data-bs-dismiss="modal">Delete</button>
+                    <div>
+                        <button type="submit" class="btn btn-primary" id="saveEditWarehouseBtn">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Delete Confirmation -->
+<div class="modal fade modal" id="deleteWarehouseModal" tabindex="-1" aria-labelledby="deleteWarehouseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteWarehouseModalLabel">Confirm Delete</h5>
                 <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this user?
+                Are you sure you want to delete this warehouse?
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteUserBtn">Delete</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteWarehouseBtn">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="{{ asset('js/users.js') }}"></script>
+<script src="{{ asset('js/warehouses.js') }}"></script>
 @endsection
 
 @push('styles')

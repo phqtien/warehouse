@@ -20,7 +20,7 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider">
+    <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -32,7 +32,8 @@
         <div id="collapseAdmin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="/users">Users</a>
-                <a class="collapse-item" href="/products">Product</a>
+                <a class="collapse-item" href="/warehouses">Warehouse</a>
+                <a class="collapse-item" href="/shelves">Shelves</a>
             </div>
         </div>
     </li>
@@ -40,12 +41,24 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item -->
+    <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="/users">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+            aria-expanded="true" aria-controls="collapseUser">
             <i class="fas fa-fw fa-users"></i>
-            <span>Users</span>
+            <span>User</span>
         </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/customers">Customers</a>
+                <a class="collapse-item" href="/products">Products</a>
+                <a class="collapse-item" href="/inventories">Inventories</a>
+                <a class="collapse-item" href="/purchase-orders">Puchase Orders</a>
+                <a class="collapse-item" href="/purchase-order-details">Puchase Order Details</a>
+                <a class="collapse-item" href="/sale-orders">Sale Orders</a>
+                <a class="collapse-item" href="/sale-order-details">Sale Order Details</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->
