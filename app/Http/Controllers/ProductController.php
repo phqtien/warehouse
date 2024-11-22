@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Imports\ProductsImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +47,20 @@ class ProductController extends Controller
         }
 
         return abort(404);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        $import = new ProductsImport();
+        Excel::import($import, $request->file('file'));
+
+        return response()->json([
+            'message' => "$import->successCount/$import->totalCount products were imported successfully.",
+        ], 201);
     }
 
     public function store(Request $request)
