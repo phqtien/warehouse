@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use App\Exports\SaleOrdersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\NewSaleOrderEmail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class SaleOrderController extends Controller
 {
@@ -140,14 +144,17 @@ class SaleOrderController extends Controller
             'status' => $request->status,
         ]);
 
+        $saleOrderDetails = [];
         foreach ($request->products as $product) {
-            SaleOrderDetail::create([
+            $saleOrderDetail = SaleOrderDetail::create([
                 'sale_order_id' => $saleOrder->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity'],
                 'warehouse_id' => $product['warehouse_id'],
                 'shelf_id' => $product['shelf_id'],
             ]);
+
+            $saleOrderDetails[] = $saleOrderDetail;
         }
 
         foreach ($request->products as $product) {
@@ -164,6 +171,16 @@ class SaleOrderController extends Controller
                     'quantity' => $newQuantity,
                 ]);
             }
+        }
+
+        $adminEmails = User::join('roles', 'users.id', '=', 'roles.user_id')
+            ->where('roles.name', 'admin')
+            ->where('users.id', '!=', Auth::id())
+            ->select('users.email')
+            ->get();
+
+        foreach ($adminEmails as $adminEmails) {
+            Mail::to($adminEmails->email)->queue(new NewSaleOrderEmail($saleOrder, $saleOrderDetails));
         }
 
         return response()->json(['message' => 'Order created successfully!'], 201);
