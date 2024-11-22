@@ -44,10 +44,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // New Product
     const newProductModal = new bootstrap.Modal(document.getElementById('newProductModal'));
+    const importProductModal = new bootstrap.Modal(document.getElementById('importProductModal'));
 
     document.getElementById('showNewProductBtn').addEventListener('click', function (event) {
         newProductModal.show()
         document.getElementById('newProductForm').reset();
+    });
+
+    document.getElementById('showImportProductBtn').addEventListener('click', function (event) {
+        importProductModal.show()
+        document.getElementById('importProductForm').reset();
     });
 
     document.getElementById('newProductForm').addEventListener('submit', function (event) {
@@ -68,6 +74,27 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error(error));
     });
+
+    document.getElementById('importProductForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const fileInput = document.getElementById('importProductFile');
+        const formData = new FormData();
+
+        formData.append('file', fileInput.files[0]);
+
+        axios.post('/products/import', formData, {
+        })
+            .then(response => {
+                alert(response.data.message);
+                importProductModal.hide()
+                refreshTable();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
 
     // Set data for edit and delete modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));

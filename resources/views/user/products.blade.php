@@ -7,7 +7,10 @@
     <div class="card shadow mb-4">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-primary">Products Management</h6>
-            <button type="button" class="btn btn-primary" id="showNewProductBtn">New Product</button>
+            <div class="d-flex">
+                <button type="button" class="btn btn-success" id="showImportProductBtn">Import Product</button>
+                <button type="button" class="btn btn-primary" id="showNewProductBtn">New Product</button>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -77,6 +80,29 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" id="submitNewProductBtn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Import Product -->
+<div class="modal fade" id="importProductModal" tabindex="-1" aria-labelledby="importProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importProductModalLabel">Import Product</h5>
+                <button type="button" class="close" data-bs-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <form id="importProductForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="file">Choose file Excel:</label>
+                        <input type="file" name="file" id="importProductFile" class="form-control p-3 h-auto" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Import</button>
                 </div>
             </form>
         </div>

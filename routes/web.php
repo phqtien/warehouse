@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/products', [ProductController::class, 'index']);
         Route::get('/products/fetch', [ProductController::class, 'fetchProducts']);
         Route::post('/products', [ProductController::class, 'store']);
+        Route::post('/products/import', [ProductController::class, 'import']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
